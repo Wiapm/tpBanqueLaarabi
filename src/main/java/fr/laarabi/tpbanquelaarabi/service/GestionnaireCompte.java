@@ -6,7 +6,7 @@ package fr.laarabi.tpbanquelaarabi.service;
 
 import fr.laarabi.tpbanquelaarabi.entities.CompteBancaire;
 import jakarta.annotation.sql.DataSourceDefinition;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -27,7 +27,7 @@ import java.util.List;
             "driverClass=com.mysql.cj.jdbc.Driver"
         }
 )
-@RequestScoped
+@ApplicationScoped
 public class GestionnaireCompte {
 
     @PersistenceContext(unitName = "banquePU")
@@ -39,8 +39,13 @@ public class GestionnaireCompte {
     }
 
     public List<CompteBancaire> getAllComptes() {
-        Query query = em.createNamedQuery("Banque.findAll");
+        Query query = em.createNamedQuery("CompteBancaire.findAll");
         return query.getResultList();
+    }
+
+    public long nbComptes() {
+        Query query = em.createNamedQuery("CompteBancaire.count");
+        return (long) query.getSingleResult();
     }
 
 }
